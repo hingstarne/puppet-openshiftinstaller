@@ -23,4 +23,14 @@ openshift_registry_url=docker-buildvm-rhose.usersys.redhat.com:5000/openshift3_b
 #openshift_additional_repos=[{'id': 'ose-devel', 'name': 'ose-devel', 'baseurl': 'http://buildvm-devops.usersys.redhat.com/puddle/build/OpenShiftEnterprise/3.0/latest/RH7-RHOSE-3.0/$basearch/os', 'enabled': 1, 'gpgcheck': 0}]
 openshift_additional_repos=[{'id': 'ose-devel', 'name': 'ose-devel', 'baseurl': 'http://buildvm-devops.usersys.redhat.com/puddle/build/OpenShiftEnterpriseErrata/3.0/latest/RH7-RHOSE-3.0/$basearch/os', 'enabled': 1, 'gpgcheck': 0}]
 
+# host group for masters
+[masters]
+<% @masters.sort.each do |master| -%>
+<%= "#{master}" %>
+<% end -%>
 
+# host group for nodes
+[nodes]
+<% @nodes.sort.each do |node| -%>
+<%= "#{node}" %>
+<% end -%>

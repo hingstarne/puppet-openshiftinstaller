@@ -28,8 +28,6 @@ define openshiftinstaller::invfile (
     owner   => root,
     group   => root,
     mode    => 644,
-    content => template('oscluster/inv_head.erb',
-                        'oscluster/inv_masters.erb',
-                        'oscluster/inv_nodes.erb')
+    content => template('openshiftinstaller/inventory_file.erb'),
   }
 }
