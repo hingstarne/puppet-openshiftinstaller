@@ -39,7 +39,12 @@ class openshiftinstaller (
   $master_role        = 'openshift-master',
   $minion_role        = 'openshift-minion',
   $cluster_name_fact  = 'openshift_cluster_name',
+  # for determining the deployment type of openshift
+  $deployment_type    = 'origin',
 ) {
+
+  validate_re($deployment_type, '^(origin|enterprise)$',
+    "openshiftinstaller - Wrong value for \$deployment_type '$deployment_type'. Must be in (origin|enterprise)")
 
   # default config is "master", you have to configure nodes explicitly
   include ansible
