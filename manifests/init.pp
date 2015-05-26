@@ -42,6 +42,9 @@ class openshiftinstaller (
   # for determining the deployment type of openshift
   $deployment_type    = 'origin',
   $additional_repos   = [],
+
+  # required parameter(s)
+  $registry_url,
 ) {
 
   validate_re($deployment_type, '^(origin|enterprise)$',

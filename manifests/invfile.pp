@@ -18,6 +18,8 @@ define openshiftinstaller::invfile (
   validate_array($nodes)
   validate_array($masters)
 
+  $registry_url = $::openshiftinstaller::registry_url
+
   file { "${basedir}/openshift_cluster_${cluster_name}":
     ensure  => present,
     owner   => root,
