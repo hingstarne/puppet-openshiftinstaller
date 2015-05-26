@@ -41,10 +41,12 @@ class openshiftinstaller (
   $cluster_name_fact  = 'openshift_cluster_name',
   # for determining the deployment type of openshift
   $deployment_type    = 'origin',
+  $additional_repos   = [],
 ) {
 
   validate_re($deployment_type, '^(origin|enterprise)$',
     "openshiftinstaller - Wrong value for \$deployment_type '$deployment_type'. Must be in (origin|enterprise)")
+  validate_array($additional_repos)
 
   # default config is "master", you have to configure nodes explicitly
   include ansible

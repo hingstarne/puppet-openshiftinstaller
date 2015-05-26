@@ -19,9 +19,14 @@ deployment_type=<%= @deployment_type %>
 # Pre-release registry URL
 openshift_registry_url=docker-buildvm-rhose.usersys.redhat.com:5000/openshift3_beta/ose-${component}:${version}
 
-# Pre-release additional repo
-#openshift_additional_repos=[{'id': 'ose-devel', 'name': 'ose-devel', 'baseurl': 'http://buildvm-devops.usersys.redhat.com/puddle/build/OpenShiftEnterprise/3.0/latest/RH7-RHOSE-3.0/$basearch/os', 'enabled': 1, 'gpgcheck': 0}]
-openshift_additional_repos=[{'id': 'ose-devel', 'name': 'ose-devel', 'baseurl': 'http://buildvm-devops.usersys.redhat.com/puddle/build/OpenShiftEnterpriseErrata/3.0/latest/RH7-RHOSE-3.0/$basearch/os', 'enabled': 1, 'gpgcheck': 0}]
+# Additionally included repositories on the nodes
+<%
+  if @additional_repos.size
+    ar = @additional_repos.map { |adict| adict.to_json }
+    ar = ar.join ","
+-%>
+openshift_additional_repos=[<%= ar %>]
+<% end -%>
 
 # host group for masters
 [masters]
