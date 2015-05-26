@@ -9,6 +9,7 @@
 #
 define openshiftinstaller::invfile (
   $cluster_name       = $name,
+  $basedir,           # string
   $masters,           # array
   $nodes,             # array
 ) {
@@ -17,13 +18,7 @@ define openshiftinstaller::invfile (
   validate_array($nodes)
   validate_array($masters)
 
-  file { '/etc/ansible/inventory':
-    ensure => directory,
-    owner  => root,
-    group  => root,
-    mode   => 755,
-  }
-  file { "/etc/ansible/inventory/openshift_cluster_${cluster_name}":
+  file { "${basedir}/openshift_cluster_${cluster_name}":
     ensure  => present,
     owner   => root,
     group   => root,

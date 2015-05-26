@@ -53,6 +53,15 @@ class openshiftinstaller (
   include ansible::playbooks
   Class['::ansible::playbooks'] -> Class['openshiftinstaller']
 
+  $inventory_basedir = "${::ansible::playbooks::location}/inventory"
+
+  file { $inventory_basedir:
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => 755,
+  }
+
   $masters_clusters = query_facts(
     "$role_fact=\"$master_role\"",
     [ "$cluster_name_fact" ])
@@ -90,6 +99,8 @@ class openshiftinstaller (
   %>')
 
   # finally, let's create it ;)
-  create_resources('openshiftinstaller::invfile', $invfiles)
+  create_resources('openshiftinstaller::invfile',
+                    $invfiles,
+                    { "basedir" => $inventory_basedir })
 
 }
