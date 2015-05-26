@@ -1,13 +1,21 @@
-# oscluster::invfile -- create inventory file for a cluster
+#
+# = Define openshiftinstaller::invfile
+#
+# == Summary
+#
+# Creates the inventory file for a given cluster, which is identified by
+# its cluster name.
+#
+#
+define openshiftinstaller::invfile (
+  $cluster_name       = $name,
+  $masters,           # array
+  $nodes,             # array
+) {
 
-define oscluster::invfile {
-
-  $cluster_name = $name
-
-  $masters = unique(query_nodes("role=\"openshift-master\" and
-                         clustername=\"${cluster_name}\"", fqdn))
-  $nodes = unique(query_nodes("role~\"openshift-*\" and
-                         clustername=\"${cluster_name}\"", fqdn))
+  validate_string($cluster_name)
+  validate_array($nodes)
+  validate_array($masters)
 
   file { '/etc/ansible/inventory':
     ensure => directory,
@@ -15,7 +23,7 @@ define oscluster::invfile {
     group  => root,
     mode   => 755,
   }
-  file { "/etc/ansible/inventory/${cluster_name}":
+  file { "/etc/ansible/inventory/openshift_cluster_${cluster_name}":
     ensure  => present,
     owner   => root,
     group   => root,
