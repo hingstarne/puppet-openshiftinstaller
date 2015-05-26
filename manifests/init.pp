@@ -21,6 +21,10 @@
 #
 # == Requirements
 #
+# You need to give the ansible user sudo rights ON THE NODE MACHINES (not on
+# the master). This is the default setup of the ansible module, so please don't
+# change it.
+#
 # You need the "nvogel-ansible" module, and puppetdbquery. Both are given as
 # dependency in a local Puppetfile for use with librarian-puppet.
 #
