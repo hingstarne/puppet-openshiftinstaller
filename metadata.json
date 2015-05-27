@@ -1,0 +1,14 @@
+{
+  "name": "amadeus-openshiftinstaller",
+  "version":        "1.0.0",
+  "author":         "Axel Bock <axel.bock@amadeus.com>",
+  "license":        "MIT",
+  "summary":        "Installs openshift cluster using the official ansible installer from Redhat. Cluster nodes are collected by querying the puppetdb.",
+  "source":         "http://no.url",
+  "tags":           ["openshift"],
+  "dependencies": [
+    { "name": "dalen/puppetdbquery", "version_requirement": ">=1.5.3" },
+    { "name": "puppetlabs/stdlib",   "version_requirement": ">=4.0.0" },
+    { "name": "nvogel/ansible",      "version_requirement": ">=3.0.0" }
+  ]
+}
