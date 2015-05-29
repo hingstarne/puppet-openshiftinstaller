@@ -19,8 +19,8 @@ define openshiftinstaller::installcluster (
   # time, might prevent errors and keeps the change log tidy.
   # we use su and not runas because the output is not captured otherwise
   # (see http://is.gd/V3A3tz)
-  exec { "install cluster $cluster_name":
-    command     => "su ansible -c \"ansible-playbook -i '$inventory_file' playbooks/byo/config.yml\"",
+  exec { "install cluster ${cluster_name}":
+    command     => "su ansible -c \"ansible-playbook -i '${inventory_file}' playbooks/byo/config.yml\"",
     cwd         => $playbook_basedir,
     path        => [ '/bin', '/usr/bin', '/usr/local/bin', ],
     refreshonly => true,

@@ -52,9 +52,9 @@ class openshiftinstaller (
 ) {
 
   validate_re($deployment_type, '^(origin|enterprise)$',
-    "openshiftinstaller - Wrong value for \$deployment_type '$deployment_type'. Must be in (origin|enterprise)")
+    "openshiftinstaller - Wrong value for \$deployment_type '${deployment_type}'. Must be in (origin|enterprise)")
   validate_re($install_type, '^(automatic|manual)$',
-    "openshiftinstaller - Wrong value for \$install_type '$install_type'. Must be in (automatic|manual)")
+    "openshiftinstaller - Wrong value for \$install_type '${install_type}'. Must be in (automatic|manual)")
   validate_array($additional_repos)
 
   # default config is "master", you have to configure nodes explicitly
@@ -68,20 +68,20 @@ class openshiftinstaller (
     mode    => '0755',
   }
 
-  if $osi_puppetdb_running == 'yes' {
+  if $::osi_puppetdb_running == 'yes' {
 
     Class['::ansible::playbooks'] -> Class['openshiftinstaller']
 
-    $ansible_basedir   = "${::ansible::playbooks::location}"
+    $ansible_basedir   = $::ansible::playbooks::location
     $inventory_basedir = "${ansible_basedir}/openshift_inventory"
-    $playbook_dirname  = "openshift_playbook"
+    $playbook_dirname  = 'openshift_playbook'
     $playbook_basedir  = "${ansible_basedir}/${playbook_dirname}"
 
     file { $inventory_basedir:
       ensure  => directory,
       owner   => root,
       group   => root,
-      mode    => 755,
+      mode    => '0755',
       purge   => true,
       force   => true,
       recurse => true,
@@ -89,12 +89,12 @@ class openshiftinstaller (
     }
 
     $masters_clusters = query_facts(
-      "$query_fact=\"$master_value\"",
-      [ "$cluster_name_fact" ])
+      "${query_fact}=\"${master_value}\"",
+      [ $cluster_name_fact ])
 
     $nodes_clusters = query_facts(
-      "$query_fact=\"$minion_value\"",
-      [ "$cluster_name_fact" ])
+      "${query_fact}=\"${minion_value}\"",
+      [ $cluster_name_fact ])
 
     $invfiles = {}
     $cluster_names = []
@@ -132,7 +132,7 @@ class openshiftinstaller (
     # finally, let's create it ;)
     create_resources('openshiftinstaller::invfile',
                       $invfiles,
-                      { "basedir" => $inventory_basedir })
+                      { 'basedir' => $inventory_basedir })
 
     Invfile<||> -> Exec['clone openshift-ansible']
 
@@ -142,9 +142,9 @@ class openshiftinstaller (
     }
 
     exec { 'clone openshift-ansible':
-      command => "/usr/bin/git clone ${playbooksrc}${cmdline_select_branch} --single-branch $playbook_dirname",
+      command => "/usr/bin/git clone ${playbooksrc}${cmdline_select_branch} --single-branch ${playbook_dirname}",
       cwd     => $ansible_basedir,
-      unless  => "/usr/bin/test -d '$playbook_basedir'",
+      unless  => "/usr/bin/test -d '${playbook_basedir}'",
     }
 
     Exec['clone openshift-ansible'] -> Installcluster<||>

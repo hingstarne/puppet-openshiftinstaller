@@ -8,10 +8,13 @@
 #
 #
 define openshiftinstaller::invfile (
-  $cluster_name       = $name,
+  # required parameters
   $basedir,           # string
   $masters,           # array
   $nodes,             # array
+
+  # optional parameters
+  $cluster_name       = $name,
 ) {
 
   validate_string($cluster_name)
@@ -24,7 +27,7 @@ define openshiftinstaller::invfile (
     ensure  => present,
     owner   => root,
     group   => root,
-    mode    => 644,
+    mode    => '0644',
     content => template('openshiftinstaller/inventory_file.erb'),
   }
 }
