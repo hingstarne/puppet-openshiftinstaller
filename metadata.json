@@ -1,10 +1,10 @@
 {
-  "name": "amadeus-openshiftinstaller",
-  "version":        "2.1.1",
+  "name": "flypenguin-openshiftinstaller",
+  "version":        "2.1.2",
   "author":         "Axel Bock <axel.bock@amadeus.com>",
   "license":        "MIT",
   "summary":        "Installs openshift cluster using the official ansible installer from Redhat. Cluster nodes are collected by querying the puppetdb.",
-  "source":         "http://no.url",
+  "source":         "https://github.com/flypenguin/puppet-openshiftinstaller.git",
   "tags":           ["openshift"],
   "dependencies": [
     { "name": "dalen/puppetdbquery", "version_requirement": ">=1.5.3" },
