@@ -15,9 +15,10 @@ ansible_sudo=true
 
 # To deploy origin, change deployment_type to origin
 deployment_type=<%= @deployment_type %>
+<% unless @registry_url == '__UNSET__' -%>
 
-# Pre-release registry URL
 openshift_registry_url=<%= @registry_url %>
+<% end -%>
 
 # Additionally included repositories on the nodes
 <%
