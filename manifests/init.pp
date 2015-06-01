@@ -41,14 +41,12 @@ class openshiftinstaller (
   $master_value       = 'openshift-master',
   $minion_value       = 'openshift-minion',
   $cluster_name_fact  = 'openshift_cluster_name',
-  # for determining the deployment type of openshift (enterprise|origin)
-  $deployment_type    = 'origin',
-  $additional_repos   = [],
-  # whether installation is 'automatic' or 'manual'
   $install_type       = 'automatic',
 
-  # required parameter(s)
-  $registry_url,
+  # inventory variable settings
+  $deployment_type    = 'origin',
+  $additional_repos   = [],
+  $registry_url       = '__UNSET__',
 ) {
 
   validate_re($deployment_type, '^(origin|enterprise)$',
