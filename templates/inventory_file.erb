@@ -32,11 +32,11 @@ openshift_additional_repos=[<%= ar %>]
 # host group for masters
 [masters]
 <% @masters.sort.each do |master| -%>
-<%= "#{master}" %>
+<%= "#{master} openshift_hostname=#{master}" %>
 <% end -%>
 
 # host group for nodes
 [nodes]
 <% @nodes.sort.each do |node| -%>
-<%= "#{node}" %>
+<%= "#{node} openshift_hostname=#{node}" %>
 <% end -%>
