@@ -83,6 +83,7 @@ class openshiftinstaller (
       purge   => true,
       force   => true,
       recurse => true,
+      ignore  => 'cluster_*_success',
       source  => 'puppet:///modules/openshiftinstaller/EMPTY_DIR',
     }
 
