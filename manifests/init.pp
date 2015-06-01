@@ -6,30 +6,7 @@
 # Installs openshift in an BYO (bring-your-own) configuration on a list of hosts.
 # The host list is generated with information from puppetdb.
 #
-#
-# == Details
-#
-# We assume each host has a custom fact (by default "role"), which is queried.
-# Depending on the set role the host is configured as openshift master or
-# minion.
-#
-# We also allow multiple clusters of openshift to be installed in parallel. To
-# tell different clusters apart we assume each host has a custom fact with a
-# cluster name (or "identifier", if you wish). All hosts with the same fact value
-# are put in a single openshift cluster.
-#
-# Currently we also check out the playbook only once. Updates have to be done
-# manually.
-#
-#
-# == Requirements
-#
-# You need to give the ansible user sudo rights ON THE NODE MACHINES (not on
-# the master). This is the default setup of the ansible module, so please don't
-# change it.
-#
-# You need the "nvogel-ansible" module, and puppetdbquery. Both are given as
-# dependency in a local Puppetfile for use with librarian-puppet.
+# Please see README.md for details.
 #
 #
 class openshiftinstaller (

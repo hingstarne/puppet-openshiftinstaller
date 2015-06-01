@@ -1,6 +1,6 @@
 {
   "name": "amadeus-openshiftinstaller",
-  "version":        "2.1.0",
+  "version":        "2.1.1",
   "author":         "Axel Bock <axel.bock@amadeus.com>",
   "license":        "MIT",
   "summary":        "Installs openshift cluster using the official ansible installer from Redhat. Cluster nodes are collected by querying the puppetdb.",

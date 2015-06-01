@@ -2,7 +2,7 @@
 
 ## Summary
 
-This class will use ansible (using the nvogel/ansible module) to install openshift v3 clusters in a network (using the official RedHat openshift installer playbook). The puppet db must run on this host, currently.
+This class will use ansible to install openshift v3 clusters in a network (using the official RedHat openshift installer playbook). The puppet db must run on the same host (localhost), currently.
 
 
 ## Setup
@@ -14,6 +14,7 @@ For using this class you must have ...
   * the designated openshift nodes must have two facts configured:
     * one fact to indicate which role they have (OS master or minion)
     * another fact to incdicate the cluster they belong to (a simple name is all right)
+
 
 ## Example
 
@@ -44,11 +45,40 @@ It would then ...
 * clone the ansible installation playbook to `/etc/ansible/openshift_playbook`
 * execute the ansible installation playbook one time for each cluster with the cluster's inventory file
 
+... or in short:
+
+* create `/etc/ansible/openshift_inventories/cluster_<CLUSTERNAME>`, containing all nodes which have `$ openshift_cluster_name == <CLUSTERNAME>` (sorted into the `[masters]` and `[nodes]` depending on the value of `$role`)
+* execute ansible with each inventory file
+
 
 ## Good to know
 
-* The module will only create clusters for which a master is found
-* The module will only create the cluster ONCE. If that creation fails it is not done a second time on the next puppet run. A playbook re-run is triggered by a change (or delete) of the cluster inventory file (either manually or because it changed of added / removed hosts)
+* The ansible playbook is checked out only once. Updates have to be done manually.
+* We do not allow for different cluster configurations. It's a one-config-for-all situation. That will probably change in the future.
+* The module will only run ansible for clusters for which a master is found (the cluster inventory file is always created nonetheless).
+* The module will try to create the cluster until ansible ran through successfully one time
 * The module will install a dynamic fact called `osi_puppetb_running`, which can be `yes` or `no`. If it is anything other than `yes` the installer will not run.
-* The fact is currently checking the puppetdb on `http://localhost:8080/v3`, which is the reason that the PuppetDB must run on the same host. This will most probably be changed in the near future.
+  * The fact is currently checking the puppetdb on `http://localhost:8080/v3`, which is the reason that the PuppetDB must run on the same host. This will most probably be changed in the near future.
 
+
+## Internal mechanisms
+
+The installer will work under `/etc/ansible` (default value, taken directly out of the ansible module), more precisely in the directories `/etc/ansible/openshift_playbook` and `/etc/ansible/openshift_inventories`.
+
+The first is the target directory for the checked-out ansible playbook from github.
+
+The second is the place for the inventory files.
+
+Cluster installation is triggered in two cases:
+
+  1. puppet detects a change of the cluster's inventory file (`/etc/ansible/openshift_inventory/cluster_<CLUSTERNAME>` by default)
+  2. the "successful installation" check file is not present (`/etc/ansible/openshift_inventory/cluster_<CLUSTERNAME>_success`)
+
+The "successful installation" check file is created if an ansible run for a cluster was successful, and is also automatically deleted on any change of the cluster's inventory file.
+
+
+## Requirements
+
+* nvogel/ansible
+* dalen/puppetdbquery
+* puppetlabs/stdlib
