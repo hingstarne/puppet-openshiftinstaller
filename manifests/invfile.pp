@@ -29,5 +29,14 @@ define openshiftinstaller::invfile (
     group   => root,
     mode    => '0644',
     content => template('openshiftinstaller/inventory_file.erb'),
+  } ~>
+
+  # if the cluster changed the run-until-success cycle should start over,
+  # not only one run (if we don't delete the file)
+  exec { "delete check file for cluster ${cluster_name}":
+    command     => "rm -f '${basedir}/cluster_${cluster_name}_success'",
+    path        => [ '/usr/bin', '/bin', ],
+    refreshonly => true,
   }
+
 }
