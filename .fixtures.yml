@@ -1,0 +1,7 @@
+fixtures:
+    repositories:
+      stdlib:               https://github.com/puppetlabs/puppetlabs-stdlib.git
+      ansible:              https://github.com/nvogel/puppet-ansible.git
+      puppetdbquery:        https://github.com/dalen/puppet-puppetdbquery.git
+    symlinks:
+      openshiftinstaller:   "#{source_dir}"
