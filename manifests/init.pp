@@ -96,7 +96,7 @@ class openshiftinstaller (
         cluster_name = nodefacts[@cluster_name_fact]
         # we only create clusters which have masters :)
         # no idea if this is actually useful, but lets just be sure.
-        continue unless @invfiles.has_key? cluster_name
+        next unless @invfiles.has_key? cluster_name
         # lets go on.
         cluster = @invfiles[cluster_name]
         cluster["nodes"] ||= []
