@@ -15,6 +15,14 @@ For using this class you must have ...
     * one fact to indicate which role they have (OS master or minion)
     * another fact to incdicate the cluster they belong to (a simple name is all right)
 
+## Hiera keys
+
+If you want to set properties in the inventory files, you can do so for all clusters (using openshiftinstaller::invfile_properties hash), or cluster-specific using a hiera entry:
+
+    openshiftinstaller::invfile::CLUSTER_NAME::properties:
+      this_sets: properties for only the inventory file for for the cluster 'CLUSTER_NAME'
+
+Properties set through `openshiftinstaller::properties` are always applied to any cluster inventory file (they are merged with cluster specific property settings using the `merge()` function from stdlib).
 
 ## Example
 

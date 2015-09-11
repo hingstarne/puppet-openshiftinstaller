@@ -9,6 +9,11 @@
 # Please see README.md for details.
 #
 #
+# === Notes
+#
+# For testing please set the fact "$::test_and_dont_run" in RSpec to <true>.
+#
+#
 class openshiftinstaller (
   $playbooksrc        = 'https://github.com/openshift/openshift-ansible.git',
   $playbookversion    = '__UNSET__',
@@ -24,7 +29,9 @@ class openshiftinstaller (
   $deployment_type    = 'origin',
   $additional_repos   = [],
   $registry_url       = '__UNSET__',
-) {
+  $invfile_properties = {},
+
+) inherits openshiftinstaller::params {
 
   validate_re($deployment_type, '^(origin|enterprise)$',
     "openshiftinstaller - Wrong value for \$deployment_type '${deployment_type}'. Must be in (origin|enterprise)")
@@ -64,13 +71,19 @@ class openshiftinstaller (
       source  => 'puppet:///modules/openshiftinstaller/EMPTY_DIR',
     }
 
-    $masters_clusters = query_facts(
-      "${query_fact}=\"${master_value}\"",
-      [ $cluster_name_fact ])
+    if ! $::test_and_dont_run {
+      # real world
+      $masters_clusters = query_facts(
+        "${query_fact}=\"${master_value}\"",
+        [ $cluster_name_fact ])
 
-    $nodes_clusters = query_facts(
-      "${query_fact}=\"${minion_value}\"",
-      [ $cluster_name_fact ])
+      $nodes_clusters = query_facts(
+        "${query_fact}=\"${minion_value}\"",
+        [ $cluster_name_fact ])
+    } else {
+      $masters_clusters = $::openshiftinstaller::params::test_masters
+      $nodes_clusters   = $::openshiftinstaller::params::test_minions
+    }
 
     $invfiles = {}
     $cluster_names = []

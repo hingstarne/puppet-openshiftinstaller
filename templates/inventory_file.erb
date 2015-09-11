@@ -21,11 +21,20 @@ openshift_registry_url=<%= @registry_url %>
 
 # Additionally included repositories on the nodes
 <%
-  if @additional_repos.size
+  if @additional_repos && additional_repos.size
     ar = @additional_repos.map { |adict| adict.to_json }
     ar = ar.join ","
 -%>
 openshift_additional_repos=[<%= ar %>]
+<% end -%>
+
+# additionally set properties
+<% if @use_properties && @use_properties.length > 0 -%>
+<% @use_properties.keys.sort.each do |key| -%>
+<%= key %>="<%= @use_properties[key] %>"
+<% end -%>
+<% else -%>
+# ... no additional properties set.
 <% end -%>
 
 # host group for masters
