@@ -33,7 +33,7 @@ define openshiftinstaller::installcluster (
   # we use su and not runas because the output is not captured otherwise
   # (see http://is.gd/V3A3tz)
   exec { "install cluster ${cluster_name}":
-    command     => "touch ${run_file} && su ansible -c \"ansible-playbook -i '${inventory_file}' playbooks/byo/config.yml\" && rm ${run_file}",
+    command     => "touch ${run_file} && su ansible -c \"ansible-playbook -i '${inventory_file}' playbooks/byo/config.yml\" ;; rm ${run_file}",
     cwd         => $playbook_basedir,
     path        => [ '/bin', '/usr/bin', '/usr/local/bin', ],
     refreshonly => true,
