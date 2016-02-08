@@ -15,6 +15,7 @@ define openshiftinstaller::installcluster (
 
   $inventory_file     = "${inventory_basedir}/cluster_${cluster_name}"
   $check_file         = "${inventory_basedir}/cluster_${cluster_name}_success"
+  $run_file           = "${inventory_basedir}/cluster_${cluster_name}_installing"
 
   # we subscribte to TWO sources:
   #     - changed inventory files
@@ -25,13 +26,14 @@ define openshiftinstaller::installcluster (
 
   exec { "run check for ${cluster_name}":
     command => '/usr/bin/true',
-    unless  => "/usr/bin/test -f '${check_file}'"
+    timeout => 0,
+    unless  => [ "/usr/bin/test -f '${check_file}' || /usr/bin/test -f '${run_file}'" ]
   }
 
   # we use su and not runas because the output is not captured otherwise
   # (see http://is.gd/V3A3tz)
   exec { "install cluster ${cluster_name}":
-    command     => "su ansible -c \"ansible-playbook -i '${inventory_file}' playbooks/byo/config.yml\"",
+    command     => "touch ${run_file} && su ansible -c \"ansible-playbook -i '${inventory_file}' playbooks/byo/config.yml\" && rm ${run_file}",
     cwd         => $playbook_basedir,
     path        => [ '/bin', '/usr/bin', '/usr/local/bin', ],
     refreshonly => true,
